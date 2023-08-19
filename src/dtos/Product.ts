@@ -1,3 +1,3 @@
-export default interface CreateProductDto {
+export default interface ProductDTO {
     name: string
 }

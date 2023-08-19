@@ -1,15 +1,15 @@
 import { Router } from "express"
-import CreateProductDto from "../dtos/Product"
+
+import { createProduct, getProduct, updateProduct } from "../controllers/product"
 
 const router = Router()
 
-router.get("/", (req, res) => {
-    res.send("List of products")
-})
+router.get("/", getProduct)
 
-router.post("/", (req, res) => {
-    const { name } = req.body as CreateProductDto
-    res.json(name)
-})
+router.post("/", createProduct)
+
+router.put("/:id", updateProduct)
+
+router.delete("/:id", updateProduct)
 
 export default router;
