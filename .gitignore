@@ -10,6 +10,7 @@ coverage
 
 # API keys and secrets
 .env
+.env.development
 
 # OS metadata
 .DS_Store
