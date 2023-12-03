@@ -11,15 +11,12 @@ export const getProducts: RequestHandler = async (req, res, next) => {
 }
 
 export const createProduct: RequestHandler = async (req, res, next) => {
-    const { name } = req.body as ProductDto
-    // const newProduct = new Product(Math.random().toString(), name)
-    const newProduct = new Product({ name: "Test product" })
-    await newProduct.save()
-    // products.push(newProduct)
+    const product = new Product(req.body as ProductDto)
+    const savedProduct = await product.save()
 
     res.status(201).json({
         message: "Created a new product",
-        newProduct
+        savedProduct
     })
 }
 
@@ -44,21 +41,20 @@ export const createProduct: RequestHandler = async (req, res, next) => {
 //     })
 // }
 
-// export const deleteProduct: RequestHandler<{ id: string }> = (req, res, next) => {
-//     const productId = req.params.id
-//     const productIndex = products.findIndex(p => p.id === productId)
+export const deleteProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
+    console.log("Going to delete: ", req.params.id)
+    const product = await Product.findOneAndDelete({ _id: req.params.id })
 
-//     if (productIndex < 0) {
-//         let err = new Error("Cannot find a product... it is probably already deleted!")
-//         res.status(400)
-//         next(err)
+    if (!product) {
+        let err = new Error("Cannot find a product... it is probably already deleted!")
+        res.status(400)
+        next(err)
 
-//         return
-//     }
+        return
+    }
 
-//     products.splice(productIndex, 1)
-//     res.status(200).json({
-//         message: "Product deleted!",
-//         products
-//     })
-// }
+    res.status(200).json({
+        message: "Product deleted!",
+        product
+    })
+}
