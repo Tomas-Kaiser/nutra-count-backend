@@ -12,6 +12,7 @@ interface Product {
     protein: string;
     salt: string;
     suger: string;
+    barCode: string;
 }
 
 const productSchema = new Schema<Product>({
@@ -24,7 +25,8 @@ const productSchema = new Schema<Product>({
     fiber: { type: String, required: true },
     protein: { type: String, required: true },
     salt: { type: String, required: true },
-    suger: { type: String, required: true }
+    suger: { type: String, required: true },
+    barCode: { type: String }
 });
 
 export const Product = model<Product>('Product', productSchema);

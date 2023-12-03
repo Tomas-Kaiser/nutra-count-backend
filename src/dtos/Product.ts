@@ -9,5 +9,5 @@ export default interface ProductDTO {
     protein: string;
     salt: string;
     suger: string;
-    qrCode?: string;
+    barCode?: string;
 }
