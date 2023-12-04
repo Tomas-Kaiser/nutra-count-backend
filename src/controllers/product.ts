@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 
 import { Product } from "../models/Product";
-import ProductDto from "../dtos/Product";
+import ProductDTO from "../dtos/Product";
 
 
 export const getProducts: RequestHandler = async (req, res, next) => {
@@ -11,7 +11,7 @@ export const getProducts: RequestHandler = async (req, res, next) => {
 }
 
 export const createProduct: RequestHandler = async (req, res, next) => {
-    const product = new Product(req.body as ProductDto)
+    const product = new Product(req.body as ProductDTO)
     const savedProduct = await product.save()
 
     res.status(201).json({
@@ -20,26 +20,46 @@ export const createProduct: RequestHandler = async (req, res, next) => {
     })
 }
 
-// export const updateProduct: RequestHandler<{ id: string }> = (req, res, next) => {
-//     const productId = req.params.id
-//     const productIndex = products.findIndex(p => p.id === productId)
+export const updateProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
+    console.log("UPDATE")
+    console.log("ID", req.params.id)
+    console.log("updatedProduct: ", req.body as ProductDTO)
+    const updatedProduct = req.body as ProductDTO
+    const product = await Product.findById(req.params.id)
 
-//     if (productIndex < 0) {
-//         let err = new Error("Cannot find a product...")
-//         res.status(400)
-//         next(err)
+    if (!product) {
+        let err = new Error("Cannot find a product...")
+        res.status(400)
+        next(err)
 
-//         return
-//     }
+        return
+    }
 
-//     const { name: productName } = req.body as ProductDTO
-//     products[productIndex] = new Product(products[productIndex].id, productName)
+    product.set(
+        {
+            name: updatedProduct.name,
+            carbohydrate: updatedProduct.carbohydrate,
+            energyKj: updatedProduct.energyKj,
+            energyKcal: updatedProduct.energyKcal,
+            fat: updatedProduct.fat,
+            saturatesFat: updatedProduct.saturatesFat,
+            fiber: updatedProduct.fiber,
+            protein: updatedProduct.protein,
+            salt: updatedProduct.salt,
+            suger: updatedProduct.suger,
+            barCode: updatedProduct.barCode,
+            _id: product._id,
+            __v: product.__v
+        }
+    )
 
-//     res.json({
-//         message: "Product updated!",
-//         updatedProduct: products[productIndex]
-//     })
-// }
+    const savedProduct = await product.save()
+
+    res.json({
+        message: "Product updated!",
+        updatedProduct: savedProduct
+    })
+}
 
 export const deleteProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
     console.log("Going to delete: ", req.params.id)
