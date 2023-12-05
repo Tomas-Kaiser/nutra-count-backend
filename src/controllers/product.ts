@@ -21,12 +21,8 @@ export const createProduct: RequestHandler = async (req, res, next) => {
 }
 
 export const updateProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
-    console.log("UPDATE")
-    console.log("ID", req.params.id)
-    console.log("updatedProduct: ", req.body as ProductDTO)
     const updatedProduct = req.body as ProductDTO
     const product = await Product.findById(req.params.id)
-
     if (!product) {
         let err = new Error("Cannot find a product...")
         res.status(400)
@@ -35,25 +31,8 @@ export const updateProduct: RequestHandler<{ id: string }> = async (req, res, ne
         return
     }
 
-    product.set(
-        {
-            name: updatedProduct.name,
-            carbohydrate: updatedProduct.carbohydrate,
-            energyKj: updatedProduct.energyKj,
-            energyKcal: updatedProduct.energyKcal,
-            fat: updatedProduct.fat,
-            saturatesFat: updatedProduct.saturatesFat,
-            fiber: updatedProduct.fiber,
-            protein: updatedProduct.protein,
-            salt: updatedProduct.salt,
-            suger: updatedProduct.suger,
-            barCode: updatedProduct.barCode,
-            _id: product._id,
-            __v: product.__v
-        }
-    )
-
-    const savedProduct = await product.save()
+    product.set({ ...updatedProduct, ...product });
+    const savedProduct = await product.save();
 
     res.json({
         message: "Product updated!",
