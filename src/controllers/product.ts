@@ -6,6 +6,13 @@ import ProductDTO from "../dtos/Product";
 
 export const getProducts: RequestHandler = async (req, res, next) => {
     const product = await Product.find()
+    if (!product || product.length === 0) {
+        let err = new Error("Cannot find any products...")
+        res.status(400)
+        next(err)
+
+        return
+    }
 
     res.json({ product })
 }
