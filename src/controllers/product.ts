@@ -48,7 +48,6 @@ export const updateProduct: RequestHandler<{ id: string }> = async (req, res, ne
 }
 
 export const deleteProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
-    console.log("Going to delete: ", req.params.id)
     const product = await Product.findOneAndDelete({ _id: req.params.id })
 
     if (!product) {
