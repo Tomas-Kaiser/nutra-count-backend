@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import Joi from "joi";
 
 import { Product } from "../models/Product";
 import ProductDTO from "../dtos/Product";
@@ -18,7 +19,23 @@ export const getProducts: RequestHandler = async (req, res, next) => {
 }
 
 export const createProduct: RequestHandler = async (req, res, next) => {
-    const product = new Product(req.body as ProductDTO)
+    const productDTO = req.body as ProductDTO;
+    const schema = Joi.object({
+        name: Joi.string()
+            .min(3)
+            .max(20)
+            .required(),
+    })
+    const { error, value: productValidated } = schema.validate(productDTO);
+    if (error) {
+        let err = new Error(error.message)
+        res.status(400)
+        next(err)
+
+        return
+    }
+
+    const product = new Product(productValidated)
     const savedProduct = await product.save()
 
     res.status(201).json({
