@@ -2,7 +2,7 @@ import express from "express"
 import { config } from 'dotenv';
 import 'express-async-errors';
 
-import productRouter from "./routers/products"
+import productRouter from "./routers/product"
 import errorHandler from "./middleware/errorHandler";
 import connectDb from "./config/db";
 
