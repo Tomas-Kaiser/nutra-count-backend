@@ -16,17 +16,17 @@ interface Product {
 }
 
 const productSchema = new Schema<Product>({
-    name: { type: String, required: true },
-    carbohydrate: { type: String, required: true },
-    energyKj: { type: String, required: true },
-    energyKcal: { type: String, required: true },
-    fat: { type: String, required: true },
-    saturatesFat: { type: String, required: true },
-    fiber: { type: String, required: true },
-    protein: { type: String, required: true },
-    salt: { type: String, required: true },
-    suger: { type: String, required: true },
-    barCode: { type: String }
+    name: { type: String, required: true, minlength: 3, maxlength: 30 },
+    carbohydrate: { type: String, required: true, minlength: 3, maxlength: 4 },
+    energyKj: { type: String, required: true, minlength: 3, maxlength: 4 },
+    energyKcal: { type: String, required: true, minlength: 3, maxlength: 4 },
+    fat: { type: String, required: true, minlength: 3, maxlength: 4 },
+    saturatesFat: { type: String, required: true, minlength: 3, maxlength: 4 },
+    fiber: { type: String, required: true, minlength: 3, maxlength: 4 },
+    protein: { type: String, required: true, minlength: 3, maxlength: 4 },
+    salt: { type: String, required: true, minlength: 3, maxlength: 4 },
+    suger: { type: String, required: true, minlength: 3, maxlength: 4 },
+    barCode: { type: String, required: true, minlength: 3, maxlength: 14 }
 });
 
 export const Product = model<Product>('Product', productSchema);
