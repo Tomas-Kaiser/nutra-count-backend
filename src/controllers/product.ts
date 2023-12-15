@@ -7,8 +7,8 @@ import { isValidObjectId } from "mongoose";
 
 
 export const getProducts: RequestHandler = async (req, res, next) => {
-    const product = await Product.find()
-    if (!product || product.length === 0) {
+    const products = await Product.find()
+    if (!products || products.length === 0) {
         const err = new Error("Cannot find any products...")
         res.status(400)
         next(err)
@@ -16,7 +16,7 @@ export const getProducts: RequestHandler = async (req, res, next) => {
         return
     }
 
-    res.json({ product })
+    res.json({ products })
 }
 
 export const createProduct: RequestHandler = async (req, res, next) => {
