@@ -2,7 +2,7 @@ import express from "express"
 import { config } from 'dotenv';
 import 'express-async-errors';
 
-import productRouter from "./routers/product"
+import productsRouter from "./routers/products"
 import errorHandler from "./middleware/errorHandler";
 import connectDb from "./config/db";
 
@@ -16,7 +16,7 @@ connectDb()
 const app = express()
 // To parse json from client
 app.use(express.json())
-app.use("/api/products", productRouter)
+app.use("/api/products", productsRouter)
 
 app.get("/", (req, res) => {
     res.send("Hello NutraCount :)")
@@ -25,4 +25,4 @@ app.get("/", (req, res) => {
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5001
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`))
+export const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`))
