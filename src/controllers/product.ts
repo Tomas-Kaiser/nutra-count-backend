@@ -19,6 +19,28 @@ export const getProducts: RequestHandler = async (req, res, next) => {
     res.json({ products })
 }
 
+export const getProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
+    const id = req.params.id
+    if (!isValidObjectId(id)) {
+        const err = new Error("Id is not valid!")
+        res.status(404)
+        next(err)
+
+        return
+    }
+
+    const product = await Product.findById(id);
+    if (!product) {
+        const err = new Error("Cannot find a product...")
+        res.status(400)
+        next(err)
+
+        return
+    }
+
+    res.json({ product });
+}
+
 export const createProduct: RequestHandler = async (req, res, next) => {
     const productDTO = req.body as ProductDTO;
     const { error, value: productValidated } = ProductValidator.validate(productDTO)
