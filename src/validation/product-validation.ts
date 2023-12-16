@@ -43,7 +43,7 @@ export const ProductValidator = Joi.object<ProductDTO>({
         .max(4)
         .required(),
     barCode: Joi.string()
-        .min(1)
+        .min(10)
         .max(14)
         .required()
 })
