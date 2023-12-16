@@ -37,16 +37,38 @@ describe("/api/products", () => {
 
         });
 
-        it("should return all products", async () => {
-            await Product.collection.insertMany([
-                { name: "productName1" },
-                { name: "productName2" }
-            ]);
+        it("should return a product if valid id is passed", async () => {
+            // Arrange
+            const mockProduct = {
+                "name": "flour",
+                "carbohydrate": "100",
+                "energyKj": "200",
+                "energyKcal": "500",
+                "fat": "300",
+                "saturatesFat": "200",
+                "fiber": "500",
+                "protein": "200",
+                "salt": "100",
+                "suger": "100",
+                "barCode": "asdadawasdf"
+            }
+            const product = new Product(mockProduct);
+            await product.save();
 
-            const res = await request(server).get("/api/products");
+            // Act
+            const res = await request(server).get(`/api/products/${product.id}`);
 
-            expect(res.status).toBe(200);
+            // Arrange
+            expect(res.status).toBe(200)
+            expect(res.body.product).toHaveProperty("name", product.name)
+        })
 
+        it("should return a 404 if invalid id is passed", async () => {
+            // Act
+            const res = await request(server).get(`/api/products/1`);
+
+            // Arrange
+            expect(res.status).toBe(404)
         })
     })
 })
