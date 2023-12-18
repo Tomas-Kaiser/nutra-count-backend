@@ -25,7 +25,15 @@ export const authUser: RequestHandler = async (req, res, next) => {
         return
     }
 
-    const isAuthanticated = await bcrypt.compare(authDTO.password, user.password);
+    const validPassword = await bcrypt.compare(authDTO.password, user.password);
+    if (!validPassword) {
+        const err = new Error("Invalid username or password!")
+        res.status(400)
+        next(err)
 
-    res.status(200).send(isAuthanticated)
+        return
+    }
+
+    const token = user.generateAuthToken();
+    res.status(200).send(token)
 }  
