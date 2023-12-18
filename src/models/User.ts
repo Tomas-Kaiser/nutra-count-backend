@@ -1,12 +1,15 @@
+import jwt from "jsonwebtoken"
+
 import { Schema, model } from 'mongoose';
 
 interface User {
     name: string;
     email: string;
     password: string;
+    generateAuthToken: () => string;
 }
 
-const userSchema = new Schema<User>({
+let userSchema = new Schema<User>({
     name: {
         type: String,
         min: 4,
@@ -26,7 +29,13 @@ const userSchema = new Schema<User>({
         max: 1024,
         required: true
     }
-})
+});
+
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({ _id: this._id }, `${process.env.JWT_PRIVATE_KEY_NUTRA_CHECK_BACKEND}`);
+
+    return token;
+}
 
 export const User = model<User>("User", userSchema)
 
