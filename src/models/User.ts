@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
 import { Schema, model } from 'mongoose';
 
@@ -6,6 +6,7 @@ interface User {
     name: string;
     email: string;
     password: string;
+    isAdmin: boolean;
     generateAuthToken: () => string;
 }
 
@@ -28,11 +29,12 @@ let userSchema = new Schema<User>({
         min: 4,
         max: 1024,
         required: true
-    }
+    },
+    isAdmin: { type: Boolean, default: false }
 });
 
 userSchema.methods.generateAuthToken = function () {
-    const token = jwt.sign({ _id: this._id }, `${process.env.JWT_PRIVATE_KEY_NUTRA_CHECK_BACKEND}`);
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, `${process.env.JWT_PRIVATE_KEY_NUTRA_CHECK_BACKEND}`);
 
     return token;
 }
