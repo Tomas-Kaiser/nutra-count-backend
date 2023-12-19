@@ -10,6 +10,10 @@ import connectDb from "./config/db";
 
 // To load .env
 config()
+if (!process.env.NODE_ENV || !process.env.JWT_PRIVATE_KEY_NUTRA_CHECK_BACKEND) {
+    console.error("FATAL ERROR: node_env or jwt_private_key have not been set up");
+    process.exit(1);
+}
 // To load specific .env.{environment}
 config({ path: `.env.${process.env.NODE_ENV}` });
 
