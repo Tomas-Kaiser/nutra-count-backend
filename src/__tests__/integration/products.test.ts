@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 
 import { server } from "../../app"
 import { Product } from "../../models/Product"
+import { User } from "../../models/User"
 
 
 describe("/api/products", () => {
@@ -78,6 +79,29 @@ describe("/api/products", () => {
 
             expect(res.status).toBe(401)
 
+        })
+
+        it("should return 400 if product is less than 5 characters", async () => {
+            const token = new User().generateAuthToken();
+
+            const res = await request(server)
+                .post("/api/products")
+                .set("x-auth-token", token)
+                .send({ name: "na" })
+
+            expect(res.status).toBe(400)
+        })
+
+        it("should return 400 if product is more than 30 characters", async () => {
+            const token = new User().generateAuthToken();
+            const name = new Array(32).join('a');
+
+            const res = await request(server)
+                .post("/api/products")
+                .set("x-auth-token", token)
+                .send({ name })
+
+            expect(res.status).toBe(400);
         })
     })
 })
