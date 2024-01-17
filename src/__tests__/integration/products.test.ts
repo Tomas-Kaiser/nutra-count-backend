@@ -103,5 +103,44 @@ describe("/api/products", () => {
 
             expect(res.status).toBe(400);
         })
+
+        it("should save the product if it is valid", async () => {
+            const token = new User().generateAuthToken();
+
+
+            await request(server)
+                .post("/api/products")
+                .set("x-auth-token", token)
+                .send({ name: "product1" })
+
+            const product = await Product.find({ name: "product1" });
+
+            expect(product).not.toBeNull();
+        })
+
+        it("should return the product if it is valid", async () => {
+            const token = new User().generateAuthToken();
+            const mockProduct = {
+                name: "product1",
+                carbohydrate: "100",
+                energyKj: "200",
+                energyKcal: "500",
+                fat: "300",
+                saturatesFat: "200",
+                fiber: "500",
+                protein: "200",
+                salt: "100",
+                suger: "100",
+                barCode: "asdadawasdf",
+            }
+
+            const res = await request(server)
+                .post("/api/products")
+                .set("x-auth-token", token)
+                .send(mockProduct)
+
+            expect(res.body.savedProduct).toHaveProperty("_id")
+            expect(res.body.savedProduct).toHaveProperty("name", "product1")
+        })
     })
 })
