@@ -4,6 +4,7 @@ import mongoose from "mongoose"
 import { server } from "../../app"
 import { Product } from "../../models/Product"
 import { User } from "../../models/User"
+import ProductDTO from "../../dtos/Product"
 
 
 describe("/api/products", () => {
@@ -74,53 +75,18 @@ describe("/api/products", () => {
     })
 
     describe("POST /", () => {
-        it("should return 401 if client is not logged in", async () => {
-            const res = await request(server).post("/api/products").send({ name: "productName1" })
+        let token: string;
+        let product: ProductDTO;
 
-            expect(res.status).toBe(401)
-
-        })
-
-        it("should return 400 if product is less than 5 characters", async () => {
-            const token = new User().generateAuthToken();
-
-            const res = await request(server)
+        const exec = async () => {
+            return await request(server)
                 .post("/api/products")
                 .set("x-auth-token", token)
-                .send({ name: "na" })
-
-            expect(res.status).toBe(400)
-        })
-
-        it("should return 400 if product is more than 30 characters", async () => {
-            const token = new User().generateAuthToken();
-            const name = new Array(32).join('a');
-
-            const res = await request(server)
-                .post("/api/products")
-                .set("x-auth-token", token)
-                .send({ name })
-
-            expect(res.status).toBe(400);
-        })
-
-        it("should save the product if it is valid", async () => {
-            const token = new User().generateAuthToken();
-
-
-            await request(server)
-                .post("/api/products")
-                .set("x-auth-token", token)
-                .send({ name: "product1" })
-
-            const product = await Product.find({ name: "product1" });
-
-            expect(product).not.toBeNull();
-        })
-
-        it("should return the product if it is valid", async () => {
-            const token = new User().generateAuthToken();
-            const mockProduct = {
+                .send(product)
+        }
+        beforeEach(async () => {
+            token = new User().generateAuthToken();
+            product = {
                 name: "product1",
                 carbohydrate: "100",
                 energyKj: "200",
@@ -133,11 +99,49 @@ describe("/api/products", () => {
                 suger: "100",
                 barCode: "asdadawasdf",
             }
+        })
 
+        it("should return 401 if client is not logged in", async () => {
+            token = ""
+
+            const res = await exec()
+
+            expect(res.status).toBe(401)
+
+        })
+
+        it("should return 400 if product is less than 3 characters", async () => {
+            product.name = "12";
+
+            console.log(product)
+
+            const res = await exec();
+
+            expect(res.status).toBe(400)
+        })
+
+        it("should return 400 if product is more than 30 characters", async () => {
+            product.name = new Array(32).join('a');
+
+            const res = await exec();
+
+            expect(res.status).toBe(400);
+        })
+
+        it("should save the product if it is valid", async () => {
+
+            await exec();
+
+            const product = await Product.find({ name: "product1" });
+
+            expect(product).not.toBeNull();
+        })
+
+        it("should return the product if it is valid", async () => {
             const res = await request(server)
                 .post("/api/products")
                 .set("x-auth-token", token)
-                .send(mockProduct)
+                .send(product);
 
             expect(res.body.savedProduct).toHaveProperty("_id")
             expect(res.body.savedProduct).toHaveProperty("name", "product1")
