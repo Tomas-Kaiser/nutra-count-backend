@@ -4,6 +4,7 @@ import { server } from "../../../app"
 import mongoose from "mongoose";
 import ProductDTO from "../../../dtos/Product";
 import { User } from "../../../models/User";
+import { Product } from "../../../models/Product";
 
 describe("auth middleware", () => {
     let token: string;
@@ -33,6 +34,10 @@ describe("auth middleware", () => {
         }
     })
 
+    afterEach(async () => {
+        await Product.deleteMany({});
+    });
+
     afterAll(async () => {
         server.close();
         await mongoose.connection.close();
@@ -44,6 +49,22 @@ describe("auth middleware", () => {
         const res = await exec();
 
         expect(res.status).toBe(401);
+
+    });
+
+    it("should return 400 if token is invalid", async () => {
+        token = "a";
+
+        const res = await exec();
+
+        expect(res.status).toBe(400);
+
+    });
+
+    it("should return 200 if token is valid", async () => {
+        const res = await exec();
+
+        expect(res.status).toBe(201);
 
     });
 });
