@@ -72,6 +72,16 @@ describe("/api/products", () => {
             // Arrange
             expect(res.status).toBe(404)
         })
+
+        it("should return a 404 if no product with given id exists", async () => {
+            // Arrange
+            const id = new mongoose.Types.ObjectId();
+            // Act
+            const res = await request(server).get(`/api/products/${id}`);
+
+            // Arrange
+            expect(res.status).toBe(404)
+        })
     })
 
     describe("POST /", () => {

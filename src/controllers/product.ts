@@ -32,7 +32,7 @@ export const getProduct: RequestHandler<{ id: string }> = async (req, res, next)
     const product = await Product.findById(id);
     if (!product) {
         const err = new Error("Cannot find a product...")
-        res.status(400)
+        res.status(404)
         next(err)
 
         return
