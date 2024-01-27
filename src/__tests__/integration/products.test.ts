@@ -42,17 +42,20 @@ describe("/api/products", () => {
         it("should return a product if valid id is passed", async () => {
             // Arrange
             const mockProduct = {
+                "barCode": "asdadawasdf",
                 "name": "flour",
-                "carbohydrate": "100",
-                "energyKj": "200",
-                "energyKcal": "500",
-                "fat": "300",
-                "saturatesFat": "200",
-                "fiber": "500",
-                "protein": "200",
-                "salt": "100",
-                "suger": "100",
-                "barCode": "asdadawasdf"
+                "nutrition": {
+                    "carbohydrate": "100",
+                    "energyKj": "200",
+                    "energyKcal": "500",
+                    "fat": "300",
+                    "saturatesFat": "200",
+                    "fiber": "500",
+                    "protein": "200",
+                    "salt": "100",
+                    "suger": "100",
+                }
+
             }
             const product = new Product(mockProduct);
             await product.save();
@@ -97,17 +100,19 @@ describe("/api/products", () => {
         beforeEach(async () => {
             token = new User().generateAuthToken();
             product = {
-                name: "product1",
-                carbohydrate: "100",
-                energyKj: "200",
-                energyKcal: "500",
-                fat: "300",
-                saturatesFat: "200",
-                fiber: "500",
-                protein: "200",
-                salt: "100",
-                suger: "100",
                 barCode: "asdadawasdf",
+                name: "product1",
+                nutrition: {
+                    carbohydrate: "100",
+                    energyKj: "200",
+                    energyKcal: "500",
+                    fat: "300",
+                    saturatesFat: "200",
+                    fiber: "500",
+                    protein: "200",
+                    salt: "100",
+                    suger: "100",
+                }
             }
         })
 

@@ -20,17 +20,20 @@ describe("auth middleware", () => {
     beforeEach(() => {
         token = new User().generateAuthToken();
         product = {
-            name: "product1",
-            carbohydrate: "100",
-            energyKj: "200",
-            energyKcal: "500",
-            fat: "300",
-            saturatesFat: "200",
-            fiber: "500",
-            protein: "200",
-            salt: "100",
-            suger: "100",
             barCode: "asdadawasdf",
+            name: "product1",
+            nutrition: {
+                carbohydrate: "100",
+                energyKj: "200",
+                energyKcal: "500",
+                fat: "300",
+                saturatesFat: "200",
+                fiber: "500",
+                protein: "200",
+                salt: "100",
+                suger: "100",
+            }
+
         }
     })
 
