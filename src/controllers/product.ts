@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 
+import Response from "../dtos/response/Response"
 import { Product } from "../models/Product";
 import ProductDTO from "../dtos/Product";
 import { ProductValidator } from "../validation/product-validation";
@@ -16,7 +17,7 @@ export const getProducts: RequestHandler = async (req, res, next) => {
         return
     }
 
-    res.json({ products })
+    res.json(new Response({ products }))
 }
 
 export const getProduct: RequestHandler<{ id: string }> = async (req, res, next) => {

@@ -34,8 +34,8 @@ describe("/api/products", () => {
 
             // Assert
             expect(res.status).toBe(200);
-            expect(res.body.products.some((p: { name: string }) => p.name === "productName1")).toBeTruthy();
-            expect(res.body.products.some((p: { name: string }) => p.name === "productName2")).toBeTruthy();
+            expect(res.body.result.data.products.some((p: { name: string }) => p.name === "productName1")).toBeTruthy();
+            expect(res.body.result.data.products.some((p: { name: string }) => p.name === "productName2")).toBeTruthy();
 
         });
 
