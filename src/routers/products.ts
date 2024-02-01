@@ -7,7 +7,7 @@ const router = Router()
 router.get("/", getProducts)
 router.get("/:id", getProduct)
 router.post("/", auth, createProduct)
-router.put("/:id", updateProduct)
-router.delete("/:id", deleteProduct)
+router.put("/:id", auth, updateProduct)
+router.delete("/:id", auth, deleteProduct)
 
 export default router;
