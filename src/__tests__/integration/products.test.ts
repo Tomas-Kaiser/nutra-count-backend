@@ -65,7 +65,7 @@ describe("/api/products", () => {
 
             // Arrange
             expect(res.status).toBe(200)
-            expect(res.body.product).toHaveProperty("name", product.name)
+            expect(res.body.result.data.product).toHaveProperty("name", product.name)
         })
 
         it("should return a 404 if invalid id is passed", async () => {

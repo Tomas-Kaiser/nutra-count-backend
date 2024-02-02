@@ -39,7 +39,7 @@ export const getProduct: RequestHandler<{ id: string }> = async (req, res, next)
         return
     }
 
-    res.json({ product });
+    res.json(new Response({ product }));
 }
 
 export const createProduct: RequestHandler = async (req, res, next) => {
