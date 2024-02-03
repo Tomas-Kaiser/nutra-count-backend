@@ -54,12 +54,12 @@ export const createProduct: RequestHandler = async (req, res, next) => {
     }
 
     const product = new Product(productValidated)
-    const savedProduct = await product.save()
+    await product.save()
 
-    res.status(201).json({
+    res.status(201).json(new Response({
         message: "Created a new product",
-        savedProduct
-    })
+        product
+    }))
 }
 
 export const updateProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
@@ -92,12 +92,12 @@ export const updateProduct: RequestHandler<{ id: string }> = async (req, res, ne
     }
 
     product.set({ ...productValidated, ...product });
-    const savedProduct = await product.save();
+    await product.save();
 
-    res.json({
+    res.json(new Response({
         message: "Product updated!",
-        updatedProduct: savedProduct
-    })
+        product
+    }))
 }
 
 export const deleteProduct: RequestHandler<{ id: string }> = async (req, res, next) => {
@@ -119,8 +119,8 @@ export const deleteProduct: RequestHandler<{ id: string }> = async (req, res, ne
         return
     }
 
-    res.status(200).json({
+    res.status(200).json(new Response({
         message: "Product deleted!",
         product
-    })
+    }))
 }
