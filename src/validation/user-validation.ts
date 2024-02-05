@@ -14,5 +14,8 @@ export const UserValidation = Joi.object<UserDTO>({
     password: Joi.string()
         .max(255)
         .required(),
+    weight: Joi.string()
+        .min(2)
+        .max(3)
 })
 
