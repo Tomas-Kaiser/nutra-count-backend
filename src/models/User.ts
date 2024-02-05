@@ -7,13 +7,14 @@ interface User {
     email: string;
     password: string;
     isAdmin: boolean;
+    weight: string;
     generateAuthToken: () => string;
 }
 
 let userSchema = new Schema<User>({
     name: {
         type: String,
-        min: 4,
+        min: 3,
         max: 255,
         required: true
     },
@@ -30,7 +31,13 @@ let userSchema = new Schema<User>({
         max: 1024,
         required: true
     },
-    isAdmin: { type: Boolean, default: false }
+    isAdmin: { type: Boolean, default: false },
+    weight: {
+        type: String,
+        min: 2,
+        max: 5,
+        trim: true,
+    }
 });
 
 userSchema.methods.generateAuthToken = function () {
