@@ -158,8 +158,8 @@ describe("/api/products", () => {
                 .set("x-auth-token", token)
                 .send(product);
 
-            expect(res.body.savedProduct).toHaveProperty("_id")
-            expect(res.body.savedProduct).toHaveProperty("name", "product1")
+            expect(res.body.result.data.product).toHaveProperty("_id")
+            expect(res.body.result.data.product).toHaveProperty("name", "product1")
         })
     })
 })
